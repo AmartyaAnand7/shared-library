@@ -1,16 +1,24 @@
-def call(String repoUrl , String branchName , String githubCredentials) {
+def call(String repoUrl , String branchName) {
   pipeline {
        agent any
        stages {
            stage("Checkout Code") {
-               steps {
-                   git url: "${repoUrl}",
-		       credentialsId: "${githubCredentials}",
-		       branch: "${branchName}"
-                       
-		      
-                  
-               }
+               environment {
+					GITHUB_CREDENTIAL_ID = 'jenkins-operator'
+				}
+				parallel {
+					stage('smartcid') {
+						steps {
+							sh ' if [ -d "smartcid" ]; then rm -Rf "smartcid"; fi; mkdir smartcid'
+							dir ('smartcid') {
+								script{STAGE_NAME="Checkout Code"}
+								git branch: "${params.branchName.split("/")[2]}",
+								credentialsId: "${env.GITHUB_CREDENTIAL_ID}",
+								url: "${repoUrl}"
+							}
+						}
+					}
+		}
            }
            stage("Build") {
                      parallel {
