@@ -6,6 +6,7 @@ def call(String repoUrl) {
                steps {
                    git branch: 'master',
                        url: "${repoUrl}"
+                   echo "checked out"
                }
            }
            stage("Build") {
