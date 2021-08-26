@@ -12,7 +12,7 @@ def call(String repoUrl , String branchName) {
 							sh ' if [ -d "smartcid" ]; then rm -Rf "smartcid"; fi; mkdir smartcid'
 							dir ('smartcid') {
 								script{STAGE_NAME="Checkout Code"}
-								git branch: "${params.branchName.split("/")[2]}",
+								git branch: "${branchName.split("/")[2]}",
 								credentialsId: "${env.GITHUB_CREDENTIAL_ID}",
 								url: "${repoUrl}"
 							}
