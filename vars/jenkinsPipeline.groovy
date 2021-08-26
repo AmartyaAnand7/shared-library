@@ -8,26 +8,17 @@ def call(String repoUrl) {
                        url: "${repoUrl}"
                }
            }
-           stage("Cleaning workspace") {
-               steps {
-                   echo "cleaned"
-               }
-           }
            stage("Build") {
                steps {
                    echo "built"
                }
            }
-           stage("Running Testcase") {
+           stage("Unit Test") {
               steps {
                    echo "tested"
                }
            }
-           stage("Packing Application") {
-               steps {
-                   echo "packed"
-               }
-           }
+           
        }
    }
 }
