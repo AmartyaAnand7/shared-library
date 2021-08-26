@@ -10,22 +10,22 @@ def call(String repoUrl) {
            }
            stage("Cleaning workspace") {
                steps {
-                   sh "cleaned"
+                   echo "cleaned"
                }
            }
            stage("Build") {
                steps {
-                   sh "builded"
+                   echo "built"
                }
            }
            stage("Running Testcase") {
               steps {
-                   sh "tested"
+                   echo "tested"
                }
            }
            stage("Packing Application") {
                steps {
-                   sh "packed"
+                   echo "packed"
                }
            }
        }
