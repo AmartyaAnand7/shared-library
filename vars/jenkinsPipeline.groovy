@@ -1,10 +1,10 @@
-def call(String repoUrl) {
+def call(String repoUrl , string branchName) {
   pipeline {
        agent any
        stages {
            stage("Checkout Code") {
                steps {
-                   git branch: "${branchname}",
+                   git branch: "${branchName}",
                        url: "${repoUrl}"
                   
                }
