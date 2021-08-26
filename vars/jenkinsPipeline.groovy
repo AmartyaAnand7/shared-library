@@ -5,7 +5,7 @@ def call(String repoUrl , String branchName) {
            stage("Checkout Code") {
                steps {
                    git url: "${repoUrl}",
-		       credentials: "${githubCredentials},
+		       credentials: "${githubCredentials}",
 		       branch: "${branchName}"
                        
 		      
