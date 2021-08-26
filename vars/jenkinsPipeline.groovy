@@ -10,22 +10,22 @@ def call(String repoUrl) {
            }
            stage("Cleaning workspace") {
                steps {
-                   sh "mvn clean"
+                   sh "cleaned"
                }
            }
            stage("Build") {
                steps {
-                   sh "mvn build"
+                   sh "builded"
                }
            }
            stage("Running Testcase") {
               steps {
-                   sh "mvn test"
+                   sh "tested"
                }
            }
            stage("Packing Application") {
                steps {
-                   sh "mvn package -DskipTests"
+                   sh "packed"
                }
            }
        }
