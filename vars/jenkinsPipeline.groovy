@@ -8,7 +8,7 @@ def call(String directoryName , String branchName , String repoUrl) {
 				}
 				
 						steps {
-							sh ' if [ -d ${directoryName}]; then rm -Rf ${directoryName}; fi; mkdir ${directoryName}'
+							sh ' if [ -d "${directoryName}"]; then rm -Rf "${directoryName}"; fi; mkdir ${directoryName}'
 							dir ("${directoryName}") {
 								script{STAGE_NAME="Checkout Code"}
 								git branch: "${branchName.split("/")[2]}",
@@ -30,7 +30,7 @@ def call(String directoryName , String branchName , String repoUrl) {
 						}
 						steps {
 							script{STAGE_NAME="Build Stage"}
-							dir ("${innerstageName}") {
+							dir ("${directoryName}") {
 								sh 'mvn clean install -DskipTests '
 							}
 						}
@@ -63,6 +63,20 @@ def call(String directoryName , String branchName , String repoUrl) {
 		                
                    
            }
+	   Stage("Sonar Report") {
+		       agent {
+							docker {
+								image 'maven:3-alpine'
+								args '-v $HOME/.m2:/root/.m2'
+								reuseNode true
+							}
+						}
+						steps {
+							dir ("${directoryName}") {
+								sh 'mvn -DskipTests sonar:sonar -Dsonar.host.url=http://16.107.50.87:8090 -Dsonar.exclusions=**/*.ts -Dsonar.analysis.mode=publish -Dsonar.projectName=SCID-NEW'
+							}
+						}
+	   }
            
        
        }
