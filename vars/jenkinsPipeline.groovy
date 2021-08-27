@@ -2,12 +2,12 @@ def call(String branchName , String repoUrl , String personalaccessToken) {
     pipeline {
        agent any
        parameters {
-	   listGitBranches branchFilter: '(.*)', credentialsId: 'jenkins-operator', defaultValue: 'refs/heads/develop', name: "${branchName}", description: 'Branch in new backend repo',quickFilterEnabled: false, remoteURL: "${repoUrl}", selectedValue: 'DEFAULT',type: 'PT_BRANCH'    
+	   listGitBranches branchFilter: '(.*)', credentialsId: 'scid-jenkins-operator', defaultValue: 'refs/heads/develop', name: "${branchName}", description: 'Branch in new backend repo',quickFilterEnabled: false, remoteURL: "${repoUrl}", selectedValue: 'DEFAULT',type: 'PT_BRANCH'    
        }
        stages {
            stage("Checkout Code") {
                environment {
-			GITHUB_CREDENTIAL_ID = 'jenkins-operator'
+			GITHUB_CREDENTIAL_ID = 'scid-jenkins-operator'
 		}
 		steps {
 		    sh ' if [ -d "smartcid" ]; then rm -Rf "smartcid"; fi; mkdir smartcid'
