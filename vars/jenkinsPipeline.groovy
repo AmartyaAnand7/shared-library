@@ -8,8 +8,8 @@ def call(String branchName , String repoUrl) {
 				}
 				
 						steps {
-							sh ' if [ -d "smartcid"]; then rm -Rf "smartcid"; fi; mkdir smartcid'
-							dir ("smartcid") {
+							sh ' if [ -d "smartcid" ]; then rm -Rf "smartcid"; fi; mkdir smartcid'
+							dir ('smartcid') {
 								script{STAGE_NAME="Checkout Code"}
 								git branch: "${branchName.split("/")[2]}",
 								credentialsId: "${env.GITHUB_CREDENTIAL_ID}",
@@ -30,7 +30,7 @@ def call(String branchName , String repoUrl) {
 						}
 						steps {
 							script{STAGE_NAME="Build Stage"}
-							dir ("smartcid") {
+							dir ('smartcid') {
 								sh 'mvn clean install -DskipTests '
 							}
 						}
@@ -48,7 +48,7 @@ def call(String branchName , String repoUrl) {
 						}
 						steps {
 							script{STAGE_NAME="Unit Test"}
-							dir ("smartcid") {
+							dir ('smartcid') {
 								sh 'mvn test'
 								sh 'mvn speedy-spotless:install-hooks'
 								sh 'mvn speedy-spotless:check'
@@ -72,7 +72,7 @@ def call(String branchName , String repoUrl) {
 							}
 						}
 						steps {
-							dir ("smartcid") {
+							dir ('smartcid') {
 								sh 'mvn -DskipTests sonar:sonar -Dsonar.host.url=http://16.107.50.87:8090 -Dsonar.exclusions=**/*.ts -Dsonar.analysis.mode=publish -Dsonar.projectName=SCID-NEW'
 							}
 						}
