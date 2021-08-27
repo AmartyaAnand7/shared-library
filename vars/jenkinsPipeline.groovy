@@ -63,8 +63,8 @@ def call(String directoryName , String branchName , String repoUrl) {
 		                
                    
            }
-	   Stage("Sonar Report") {
-		       agent {
+	   stage("Sonar Report") {
+		                                agent {
 							docker {
 								image 'maven:3-alpine'
 								args '-v $HOME/.m2:/root/.m2'
