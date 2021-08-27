@@ -14,7 +14,7 @@ def call(String branchName , String repoUrl) {
 		    dir ('smartcid') {
 				script{STAGE_NAME="Checkout Code"}
 				git credentialsId: "${env.GITHUB_CREDENTIAL_ID}",
-				    branch: "${params.${branchName}.split("/")[2]}",
+				    branch: "${branchName}.split("/")[2]",
 				    url: "${repoUrl}"
 		    }
 		}
