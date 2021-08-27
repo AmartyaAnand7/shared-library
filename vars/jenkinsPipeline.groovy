@@ -14,7 +14,7 @@ def call(String branchName , String repoUrl) {
 		    dir ('smartcid') {
 				script{STAGE_NAME="Checkout Code"}
 				git credentialsId: 'jenkins-operator',
-			            branch: "${branchName.split("/")[2]}",
+			            branch: "${branchName}",
 				    url: "${repoUrl}"
 		    }
 		}
