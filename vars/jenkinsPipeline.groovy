@@ -18,7 +18,7 @@ def call(String repoUrl , String branchName) {
 							}
 						}
 					}
-		}
+				}
            }
            stage("Build") {
                      parallel {
@@ -66,7 +66,7 @@ def call(String repoUrl , String branchName) {
 							}
 						}
 					}
-		    }
+		                }
                    
            }
            
