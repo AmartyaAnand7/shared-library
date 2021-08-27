@@ -17,19 +17,19 @@ def call(String branchName , String repoUrl) {
 		}
 	   }
            stage("Build") {
-                     agent {
-			docker {
-			    image 'maven:3-alpine'
-			    args '-v $HOME/.m2:/root/.m2'
-			    reuseNode true
-			}
+                 agent {
+		    docker {
+		       image 'maven:3-alpine'
+		       args '-v $HOME/.m2:/root/.m2'
+		       reuseNode true
+		    }
+		  }
+		  steps {
+		     script{STAGE_NAME="Build Stage"}
+		     dir ('smartcid') {
+			sh 'mvn clean install -DskipTests '
 		     }
-		     steps {
-		         script{STAGE_NAME="Build Stage"
-			 dir ('smartcid') {
-			     sh 'mvn clean install -DskipTests '
-			}
-		     }
+		  }
 	   }
            stage("Unit Test") {
 		  agent {
