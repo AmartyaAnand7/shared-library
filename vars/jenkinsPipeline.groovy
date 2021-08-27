@@ -1,6 +1,9 @@
 def call(String branchName , String repoUrl) {
     pipeline {
        agent any
+       parameters {
+	   listGitBranches branchFilter: '(.*)', credentialsId: 'jenkins-operator', defaultValue: 'refs/heads/develop', name: 'BRANCH_IN_NEW_BACKEND', description: 'Branch in new backend repo',quickFilterEnabled: false, remoteURL: 'https://github.hpe.com/esp-tools/smartcid', selectedValue: 'DEFAULT',type: 'PT_BRANCH'    
+       }
        stages {
            stage("Checkout Code") {
                environment {
@@ -10,7 +13,7 @@ def call(String branchName , String repoUrl) {
 		    sh ' if [ -d "smartcid" ]; then rm -Rf "smartcid"; fi; mkdir smartcid'
 		    dir ('smartcid') {
 				script{STAGE_NAME="Checkout Code"}
-				git branch: "${branchName.split("/")[2]}",
+				git branch: "${params.branchName.split("/")[2]}",
 				credentialsId: "${env.GITHUB_CREDENTIAL_ID}",
 				url: "${repoUrl}"
 		    }
