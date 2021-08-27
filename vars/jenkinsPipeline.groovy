@@ -8,7 +8,7 @@ def call(String directoryName , String branchName , String repoUrl) {
 				}
 				
 						steps {
-							sh ' if [ -d "${directoryName}"]; then rm -Rf "${directoryName}"; fi; mkdir ${directoryName}'
+							sh ' if [ -d "${directoryName}"]; then rm -Rf "${directoryName}"; fi; mkdir smartcid'
 							dir ("${directoryName}") {
 								script{STAGE_NAME="Checkout Code"}
 								git branch: "${branchName.split("/")[2]}",
