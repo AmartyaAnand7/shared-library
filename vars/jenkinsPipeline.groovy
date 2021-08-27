@@ -1,5 +1,5 @@
 def call(String directoryName , String branchName , String repoUrl) {
-  pipeline 
+    pipeline {
        agent any
        stages {
            stage("Checkout Code") {
