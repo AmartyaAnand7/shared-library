@@ -1,4 +1,4 @@
-def call(String repoUrl , String branchName) {
+def call(String innerstageName , String branchName , String repoUrl) {
   pipeline {
        agent any
        stages {
@@ -7,10 +7,10 @@ def call(String repoUrl , String branchName) {
 					GITHUB_CREDENTIAL_ID = 'jenkins-operator'
 				}
 				parallel {
-					stage('smartcid') {
+					stage("${innerstageName}") {
 						steps {
-							sh ' if [ -d "smartcid" ]; then rm -Rf "smartcid"; fi; mkdir smartcid'
-							dir ('smartcid') {
+							sh ' if [ -d "${innerstageName}"]; then rm -Rf "${innerstageName}"; fi; mkdir "${innerstageName}"'
+							dir ("${innerstageName}") {
 								script{STAGE_NAME="Checkout Code"}
 								git branch: "${branchName.split("/")[2]}",
 								credentialsId: "${env.GITHUB_CREDENTIAL_ID}",
@@ -22,7 +22,7 @@ def call(String repoUrl , String branchName) {
            }
            stage("Build") {
                      parallel {
-					stage('New SmartCID') {
+			     stage("${innerstageName}") {
 						agent {
 							docker {
 								image 'maven:3-alpine'
@@ -32,7 +32,7 @@ def call(String repoUrl , String branchName) {
 						}
 						steps {
 							script{STAGE_NAME="Build Stage"}
-							dir ('smartcid') {
+							dir ("${innerstageName}") {
 								sh 'mvn clean install -DskipTests '
 							}
 						}
@@ -44,7 +44,7 @@ def call(String repoUrl , String branchName) {
 					expression { params.INCLUDE_UNIT_TESTING == true }
 				}
 				parallel {
-					stage('Test - smartcid') {
+					stage('Test - "${innerstageName}"') {
 						agent {
 							docker {
 								image 'maven:3-alpine'
@@ -54,7 +54,7 @@ def call(String repoUrl , String branchName) {
 						}
 						steps {
 							script{STAGE_NAME="Unit Test"}
-							dir ('smartcid') {
+							dir ("${innerstageName}") {
 								sh 'mvn test'
 								sh 'mvn speedy-spotless:install-hooks'
 								sh 'mvn speedy-spotless:check'
