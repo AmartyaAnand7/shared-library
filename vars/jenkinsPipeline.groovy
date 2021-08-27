@@ -13,7 +13,7 @@ def call(String branchName , String repoUrl , String personalaccessToken) {
 		    sh ' if [ -d "smartcid" ]; then rm -Rf "smartcid"; fi; mkdir smartcid'
 		    dir ('smartcid') {
 				script{STAGE_NAME="Checkout Code"}
-				git credentialsId: 'jenkins-operator',
+				git credentialsId: "${env.GITHUB_CREDENTIAL_ID}",
 			            branch: "${params.BRANCH_IN_NEW_BACKEND.split("/")[2]}",
 				    url: "${repoUrl}"
 		    }
