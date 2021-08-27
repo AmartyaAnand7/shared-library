@@ -13,9 +13,9 @@ def call(String branchName , String repoUrl) {
 		    sh ' if [ -d "smartcid" ]; then rm -Rf "smartcid"; fi; mkdir smartcid'
 		    dir ('smartcid') {
 				script{STAGE_NAME="Checkout Code"}
-				git branch: "${branchName.split("/")[2]}",
-				credentialsId: "${env.GITHUB_CREDENTIAL_ID}",
-				url: "${repoUrl}"
+				git credentialsId: "${env.GITHUB_CREDENTIAL_ID}",
+			        git branch: "${branchName.split("/")[2]}",
+				    url: "${repoUrl}"
 		    }
 		}
 	   }
