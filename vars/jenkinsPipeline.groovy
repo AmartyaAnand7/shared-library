@@ -1,4 +1,4 @@
-def call(String branchName , String repoUrl) {
+def call(String branchName , String repoUrl , String projectName) {
     pipeline {
        agent any
        parameters {
@@ -10,7 +10,7 @@ def call(String branchName , String repoUrl) {
 			GITHUB_CREDENTIAL_ID = 'scid-jenkins-operator'
 		}
 		steps {
-		    sh ' if [ -d "smartcid" ]; then rm -Rf "smartcid"; fi; mkdir smartcid'
+			sh ' if [ -d "${projectName}" ]; then rm -Rf "${projectName}"; fi; mkdir ${projectName}'
 		    dir ('smartcid') {
 				script{STAGE_NAME="Checkout Code"}
 				git credentialsId: "${env.GITHUB_CREDENTIAL_ID}",
