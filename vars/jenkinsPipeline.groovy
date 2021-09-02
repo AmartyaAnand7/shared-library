@@ -1,9 +1,6 @@
 def call(String branchName , String repoUrl) {
     pipeline {
        agent any
-       parameters {
-	   listGitBranches branchFilter: '(.*)', credentialsId: 'scid-jenkins-operator', defaultValue: 'refs/heads/develop', name: "${branchName}", description: 'Branch in new backend repo',quickFilterEnabled: false, remoteURL: "${repoUrl}", selectedValue: 'DEFAULT',type: 'PT_BRANCH'    
-       }
        stages {
            stage("Checkout Code") {
                environment {
