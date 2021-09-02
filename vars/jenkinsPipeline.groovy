@@ -8,7 +8,7 @@ def call(String branchName , String repoUrl) {
            stage("Checkout Code") {
                environment {
 			GITHUB_CREDENTIAL_ID = 'scid-jenkins-operator'
-		        BRANCH_NAME = ${branchName}
+		        BRANCH_NAME = "${branchName}"
 		}
 		steps {
 			sh ' if [ -d "smartcid" ]; then rm -Rf "smartcid"; fi; mkdir smartcid'
