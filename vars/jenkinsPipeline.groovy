@@ -1,4 +1,4 @@
-def call(String repoUrl, String projectName) {
+def call(String repoUrl) {
     pipeline {
        agent any
        stages {
@@ -9,8 +9,8 @@ def call(String repoUrl, String projectName) {
 		        
 		}
 		steps {
-			sh ' if [ -d "${projectName}" ]; then rm -Rf "${projectName}"; fi; mkdir ${projectName}'
-			dir ('${projectName}') {
+			sh ' if [ -d "smartcid" ]; then rm -Rf "smartcid"; fi; mkdir smartcid'
+			dir ('smartcid') {
 				script{STAGE_NAME="Checkout Code"}
 				git credentialsId: "${env.GITHUB_CREDENTIAL_ID}",
 				    branch: "${env.BRANCH_NAME}",
