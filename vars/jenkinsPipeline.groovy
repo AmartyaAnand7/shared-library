@@ -1,11 +1,11 @@
-def call(String branchName , String repoUrl, String projectName) {
+def call(String repoUrl, String projectName) {
     pipeline {
        agent any
        stages {
            stage("Checkout Code") {
                environment {
 			GITHUB_CREDENTIAL_ID = 'scid-jenkins-operator'
-		        BRANCH_NAME = "${branchName}"
+		        BRANCH_NAME = 'develop'
 		        
 		}
 		steps {
