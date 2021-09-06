@@ -9,7 +9,7 @@ def call(String repoUrl, String projectName) {
 		        
 		}
 		steps {
-			sh " if [ -d "${projectName}" ]; then rm -Rf "${projectName}"; fi; mkdir ${projectName}"
+			sh " if [ -d ${projectName} ]; then rm -Rf ${projectName}; fi; mkdir ${projectName}"
 			dir ("${projectName}") {
 				script{STAGE_NAME="Checkout Code"}
 				git credentialsId: "${env.GITHUB_CREDENTIAL_ID}",
