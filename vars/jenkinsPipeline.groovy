@@ -1,4 +1,4 @@
-def call(String repoUrl, String branchName, String projectName) {
+def call(String repoUrl, String branchName, String directoryName, String projectName) {
     pipeline {
        agent any
        stages {
@@ -7,8 +7,8 @@ def call(String repoUrl, String branchName, String projectName) {
 			GITHUB_CREDENTIAL_ID = 'scid-jenkins-operator'
 		}
 		steps {
-			sh " if [ -d ${projectName} ]; then rm -Rf ${projectName}; fi; mkdir ${projectName}"
-			dir ("${projectName}") {
+			sh " if [ -d ${directoryName} ]; then rm -Rf ${directoryName}; fi; mkdir ${directoryName}"
+			dir ("${directoryName}") {
 				script{STAGE_NAME="Checkout Code"}
 				git credentialsId: "${env.GITHUB_CREDENTIAL_ID}",
 				    branch: "${branchName}",
@@ -26,7 +26,7 @@ def call(String repoUrl, String branchName, String projectName) {
 		  }
 		  steps {
 		     script{STAGE_NAME="Build Stage"}
-		     dir ("${projectName}") {
+		     dir ("${directoryName}") {
 			sh 'mvn clean install -DskipTests '
 		     }
 		  }
@@ -41,7 +41,7 @@ def call(String repoUrl, String branchName, String projectName) {
 		  }
 		  steps {
 			script{STAGE_NAME="Unit Test"}
-			dir ("${projectName}") {
+			dir ("${directoryName}") {
 				sh 'mvn test'
 				sh 'mvn speedy-spotless:install-hooks'
 				sh 'mvn speedy-spotless:check'
@@ -54,9 +54,18 @@ def call(String repoUrl, String branchName, String projectName) {
 		  }
 	   }
 	   stage("Sonar Report") {
-		   steps {
-			   echo "scanned"
+		   agent {
+			docker {
+			        image 'maven:3-alpine'
+				args '-v $HOME/.m2:/root/.m2'
+				reuseNode true
+			}
 		   }
+		   steps {
+			dir ("${directoryName}") {
+				sh "mvn -DskipTests sonar:sonar -Dsonar.host.url=http://16.107.50.87:8090 -Dsonar.exclusions=**/*.ts -Dsonar.analysis.mode=publish -Dsonar.projectName= ${projectName}"
+			}
+		  }
 	   }
        }
    }
