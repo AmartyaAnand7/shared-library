@@ -54,18 +54,9 @@ def call(String repoUrl, String branchName, String directoryName, String project
 		  }
 	   }
 	   stage("Sonar Report") {
-		   agent {
-			docker {
-			        image 'maven:3-alpine'
-				args '-v $HOME/.m2:/root/.m2'
-				reuseNode true
-			}
-		   }
 		   steps {
-			dir ("${directoryName}") {
-				sh "mvn -DskipTests sonar:sonar -Dsonar.host.url=http://16.107.50.87:8090 -Dsonar.exclusions=**/*.ts -Dsonar.analysis.mode=publish -Dsonar.projectName= ${projectName}"
-			}
-		  }
+			   echo "scanned"
+		   }
 	   }
        }
    }
