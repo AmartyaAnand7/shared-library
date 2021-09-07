@@ -1,4 +1,4 @@
-def call(String repoUrl, String branchName, String directoryName) {
+def call(String repoUrl, String branchName, String projectName) {
     pipeline {
        agent any
        stages {
@@ -7,8 +7,8 @@ def call(String repoUrl, String branchName, String directoryName) {
 			GITHUB_CREDENTIAL_ID = 'scid-jenkins-operator'
 		}
 		steps {
-			sh " if [ -d ${directoryName} ]; then rm -Rf ${directoryName}; fi; mkdir ${directoryName}"
-			dir ("${directoryName}") {
+			sh " if [ -d ${projectName} ]; then rm -Rf ${projectName}; fi; mkdir ${projectName}"
+			dir ("${projectName}") {
 				script{STAGE_NAME="Checkout Code"}
 				git credentialsId: "${env.GITHUB_CREDENTIAL_ID}",
 				    branch: "${branchName}",
@@ -26,7 +26,7 @@ def call(String repoUrl, String branchName, String directoryName) {
 		  }
 		  steps {
 		     script{STAGE_NAME="Build Stage"}
-		     dir ("${directoryName}") {
+		     dir ("${projectName}") {
 			sh 'mvn clean install -DskipTests '
 		     }
 		  }
@@ -41,7 +41,7 @@ def call(String repoUrl, String branchName, String directoryName) {
 		  }
 		  steps {
 			script{STAGE_NAME="Unit Test"}
-			dir ("${directoryName}") {
+			dir ("${projectName}") {
 				sh 'mvn test'
 				sh 'mvn speedy-spotless:install-hooks'
 				sh 'mvn speedy-spotless:check'
