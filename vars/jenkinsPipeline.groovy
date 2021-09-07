@@ -49,7 +49,7 @@ def call(String repoUrl, String branchName, String directoryName, String project
 		   }
 		   steps {
 			dir ("${directoryName}") {
-				sh "mvn -DskipTests sonar:sonar -Dsonar.host.url=http://16.107.50.87:8090 -Dsonar.exclusions=**/*.ts -Dsonar.analysis.mode=publish -Dsonar.projectName= ${projectName}"
+				sh "mvn clean install  pom.xml sonar:sonar -Dsonar.host.url=http://16.107.50.87:8090 -Dsonar.exclusions=**/*.ts -Dsonar.analysis.mode=publish -Dsonar.projectName= ${projectName}"
 			}
 		  }
 	   }
