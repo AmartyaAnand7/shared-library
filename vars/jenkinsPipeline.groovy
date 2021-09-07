@@ -27,7 +27,7 @@ def call(String repoUrl, String branchName, String directoryName, String project
 		  steps {
 		     script{STAGE_NAME="Build Stage"}
 		     dir ("${directoryName}") {
-			sh 'mvn clean install -DskipTests '
+			sh 'mvn clean install -DskipTests'
 		     }
 		  }
 	   }
