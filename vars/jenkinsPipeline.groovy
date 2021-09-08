@@ -16,21 +16,21 @@ def call(String repoUrl, String branchName, String directoryName, String project
 			}
 		}
 	   }
-	    stage("Build") {
-		  agent {
-		    docker {
-		       image 'maven:3-alpine'
-		       args '-v $HOME/.m2:/root/.m2'
-		       reuseNode true
-		    }
-		  }
-		  steps {
-		     script{STAGE_NAME="Build Stage"}
-		     dir ("${directoryName}") {
-			sh 'mvn clean install -DskipTests '
-		     }
-		  }
-	   }
+// 	    stage("Build") {
+// 		  agent {
+// 		    docker {
+// 		       image 'maven:3-alpine'
+// 		       args '-v $HOME/.m2:/root/.m2'
+// 		       reuseNode true
+// 		    }
+// 		  }
+// 		  steps {
+// 		     script{STAGE_NAME="Build Stage"}
+// 		     dir ("${directoryName}") {
+// 			sh 'mvn clean install -DskipTests '
+// 		     }
+// 		  }
+// 	   }
            
 //            stage("Unit Test") {
 // 		   agent {
@@ -65,7 +65,7 @@ def call(String repoUrl, String branchName, String directoryName, String project
 		   steps {
 			dir ("${directoryName}") {
 				sh "pwd"
-				sh "mvn -DskipTests sonar:sonar -Dsonar.host.url=http://16.107.50.87:8090 -Dsonar.exclusions=**/*.ts -Dsonar.analysis.mode=publish -Dsonar.projectName= ${projectName}"
+				sh "mvn clean install -DskipTests sonar:sonar -Dsonar.host.url=http://16.107.50.87:8090 -Dsonar.exclusions=**/*.ts -Dsonar.analysis.mode=publish -Dsonar.projectName= ${projectName}"
 			}
 		  }
 	   }
