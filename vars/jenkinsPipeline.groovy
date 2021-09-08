@@ -34,6 +34,9 @@ def call(String repoUrl, String branchName, String directoryName, String project
 		}
 	   }
 	    stage("Build") {
+		  when {
+		     expression { params.INCLUDE_BUILD_STAGE == true }
+		  }
 		  agent {
 		    docker {
 		       image 'maven:3-alpine'
@@ -50,6 +53,9 @@ def call(String repoUrl, String branchName, String directoryName, String project
 	   }
            
            stage("Unit Test") {
+		   when {
+		     expression { params.INCLUDE_UNIT_TESTING == true }
+		   }
 		   agent {
 		      docker {
 			image 'maven:3-alpine'
@@ -72,6 +78,9 @@ def call(String repoUrl, String branchName, String directoryName, String project
 		  }
 	   }
 	   stage("Sonar Report") {
+		    when {
+		      expression { params.INCLUDE_SONAR_REPORT_STAGE == true }
+		   }
 		   agent {
 			docker {
 			        image 'maven:3-alpine'
