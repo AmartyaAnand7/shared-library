@@ -32,28 +32,28 @@ def call(String repoUrl, String branchName, String directoryName, String project
 		  }
 	   }
            
-           stage("Unit Test") {
-		   agent {
-		      docker {
-			image 'maven:3-alpine'
-			args '-v $HOME/.m2:/root/.m2'
-			reuseNode true
-		      }
-		  }
-		  steps {
-			script{STAGE_NAME="Unit Test"}
-			dir ("${directoryName}") {
-				sh 'mvn test'
-				sh 'mvn speedy-spotless:install-hooks'
-				sh 'mvn speedy-spotless:check'
-			}
-		  }
-		  post {
-		        always {
-			        junit allowEmptyResults: true, testResults: '**/target/surefire-reports/*.xml'
-			}
-		  }
-	   }
+//            stage("Unit Test") {
+// 		   agent {
+// 		      docker {
+// 			image 'maven:3-alpine'
+// 			args '-v $HOME/.m2:/root/.m2'
+// 			reuseNode true
+// 		      }
+// 		  }
+// 		  steps {
+// 			script{STAGE_NAME="Unit Test"}
+// 			dir ("${directoryName}") {
+// 				sh 'mvn test'
+// 				sh 'mvn speedy-spotless:install-hooks'
+// 				sh 'mvn speedy-spotless:check'
+// 			}
+// 		  }
+// 		  post {
+// 		        always {
+// 			        junit allowEmptyResults: true, testResults: '**/target/surefire-reports/*.xml'
+// 			}
+// 		  }
+// 	   }
 	   stage("Sonar Report") {
 		   agent {
 			docker {
@@ -64,7 +64,8 @@ def call(String repoUrl, String branchName, String directoryName, String project
 		   }
 		   steps {
 			dir ("${directoryName}") {
-				sh "mvn clean install -DskipTests sonar:sonar -Dsonar.host.url=http://16.107.50.87:8090 -Dsonar.exclusions=**/*.ts -Dsonar.analysis.mode=publish -Dsonar.projectName= ${projectName}"
+				sh "pwd"
+				sh "mvn -DskipTests sonar:sonar -Dsonar.host.url=http://16.107.50.87:8090 -Dsonar.exclusions=**/*.ts -Dsonar.analysis.mode=publish -Dsonar.projectName= ${projectName}"
 			}
 		  }
 	   }
